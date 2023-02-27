@@ -52,8 +52,6 @@ MultiPagesView::MultiPagesView(AppsListModel::AppCategory categoryModel, QWidget
     m_appListArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_appListArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_appListArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_appListArea->viewport()->installEventFilter(this);
-    m_appListArea->installEventFilter(this);
 
     // 翻页按钮和动画
     m_pageSwitchAnimation = new QPropertyAnimation(m_appListArea->horizontalScrollBar(), "value", this);
@@ -155,7 +153,6 @@ void MultiPagesView::updatePageCount(AppsListModel::AppCategory category)
             pageView->setModel(pModel);
             pageView->setItemDelegate(m_delegate);
             pageView->setContainerBox(m_appListArea);
-            pageView->installEventFilter(this);
             pageView->setDelegate(this);
             m_appGridViewList.push_back(pageView);
 

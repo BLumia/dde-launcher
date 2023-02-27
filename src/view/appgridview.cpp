@@ -425,6 +425,20 @@ void AppGridView::mouseReleaseEvent(QMouseEvent *e)
         emit QListView::clicked(QModelIndex());
 }
 
+void AppGridView::wheelEvent(QWheelEvent *e)
+{
+    QPoint scroll = e->angleDelta();
+    if (getViewType() == MainView && !scroll.isNull() && scroll.x() != 0 && scroll.y() == 0) {
+        // Temporary disable horizontal scrolling since current implementation seems incorrect
+        // and might need to do a clean-up.
+        // QScroller should be the right one to be used for supporting kinetic scrolling.
+        e->accept();
+        return;
+    }
+
+    return QListView::wheelEvent(e);
+}
+
 QPixmap AppGridView::creatSrcPix(const QModelIndex &index)
 {
     QPixmap srcPix;
