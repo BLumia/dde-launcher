@@ -43,7 +43,8 @@ public:
         SwitchScale = 6,
         Uninstall = 7,
         MoveToTop = 8,
-        EditCollected = 9        // 添加到收藏列表或从收藏列表中移除
+        EditCollected = 9,       // 添加到收藏列表或从收藏列表中移除
+        DebugInfo = 10
     };
 
     bool isMenuShown() const {return m_menuIsShown;}
@@ -61,6 +62,7 @@ signals:
     void menuShowMouseMoving();
     void requestMoveToTop(const QModelIndex &index);
     void requestEditCollected(const QModelIndex &index, const bool isInCollected);
+    void showDebugInfo(const QModelIndex &index);
 
 public slots:
     void showMenuByAppItem(QPoint pos, const QModelIndex &index);

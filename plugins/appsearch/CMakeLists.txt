@@ -29,4 +29,5 @@ target_include_directories(${PLUGIN_NAME} PUBLIC
 target_link_libraries(${PLUGIN_NAME} PRIVATE
   Qt5::DBus
   Qt5::Concurrent
+  launcher-utils
 )

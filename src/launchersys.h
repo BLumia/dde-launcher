@@ -19,7 +19,9 @@ DGUI_USE_NAMESPACE
 
 class LauncherInterface;
 class WindowedFrame;
+class DWindowedFrame;
 class FullScreenFrame;
+class DFullScreenFrame;
 class AMDBusLauncherInter;
 class AMDBusDockInter;
 
@@ -62,8 +64,8 @@ private:
     LauncherInterface *m_launcherInter;                     // 启动器界面处理基类
     SessionManager *m_sessionManagerInter;                  // dbus访问远程服务类 业务逻辑处理
 
-    WindowedFrame *m_windowLauncher;                        // 启动器小窗口界面处理类
-    FullScreenFrame *m_fullLauncher;                        // 启动器全屏界面处理类
+    DWindowedFrame *m_windowLauncher;                        // 启动器小窗口界面处理类
+    DFullScreenFrame *m_fullLauncher;                        // 启动器全屏界面处理类
     DRegionMonitor *m_regionMonitor;                        // deepin tool kit中core模块的内容
     QTimer *m_autoExitTimer;
     QTimer *m_ignoreRepeatVisibleChangeTimer;               // 添加200ms延时操作，避开重复显示、隐藏启动器

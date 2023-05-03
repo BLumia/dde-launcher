@@ -32,7 +32,7 @@ DUTIL_USE_NAMESPACE
 void dump_user_apss_preset_order_list()
 {
     AppsManager *appsManager = AppsManager::instance();
-    const auto appsList = appsManager->appsInfoList(AppsListModel::FullscreenAll);
+    const auto appsList = appsManager->appsInfoList(AppsListModel::LetterMode);
 
     QStringList buf;
 

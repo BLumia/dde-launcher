@@ -83,6 +83,7 @@ void MenuWorker::creatMenuByAppItem()
     QAction *uninstall;
     QAction *collectAction;
     QAction *moveAction;
+    QAction *debugAction;
 
     open = new QAction(tr("Open"), m_menu);
     desktop = new QAction(m_isItemOnDesktop ? tr("Remove from desktop") : tr("Send to desktop"), m_menu);
@@ -92,6 +93,7 @@ void MenuWorker::creatMenuByAppItem()
     proxy = new QAction(tr("Use a proxy"), m_menu);
     moveAction = new QAction(tr("Pin to Top"));
     collectAction = new QAction(isInCollectedList ? tr("Remove from favorites") : tr("Add to favorites"));
+    debugAction = new QAction("Debug");
 
     // 分割线绘制的必要条件是，在打开功能之后，还有其他的功能选项
     if (!hideOpen) {
@@ -167,6 +169,10 @@ void MenuWorker::creatMenuByAppItem()
         m_menu->addAction(uninstall);
 #endif
 
+#ifdef QT_DEBUG
+    m_menu->addAction(debugAction);
+#endif // QT_DEBUG
+
     if (!hideOpen)
         connect(open, &QAction::triggered, m_signalMapper, static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
 
@@ -182,6 +188,9 @@ void MenuWorker::creatMenuByAppItem()
 #endif
     if (!hideUseProxy)
         connect(proxy, &QAction::triggered, m_signalMapper, static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+#ifdef QT_DEBUG
+    connect(debugAction, &QAction::triggered, m_signalMapper, static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+#endif // QT_DEBUG
 
     if (!hideOpen)
         m_signalMapper->setMapping(open, Open);
@@ -197,6 +206,9 @@ void MenuWorker::creatMenuByAppItem()
 #endif
     if (!hideUseProxy)
         m_signalMapper->setMapping(proxy, Proxy);
+#ifdef QT_DEBUG
+    m_signalMapper->setMapping(debugAction, DebugInfo);
+#endif // QT_DEBUG
 }
 
 bool MenuWorker::isMenuVisible()
@@ -303,6 +315,8 @@ void MenuWorker::handleMenuAction(int index)
     case EditCollected:
         emit requestEditCollected(m_currentModelIndex, m_isItemInCollected);
         break;
+    case DebugInfo:
+        emit showDebugInfo(m_currentModelIndex);
     default:
         break;
     }

@@ -598,6 +598,11 @@ QVariant AppsListModel::data(const QModelIndex &index, int role) const
         const ItemInfoList_v1 list = m_appsManager->appsInfoList(AppsListModel::Favorite);
         return list.contains(itemInfo);
     }
+    case AppCategoryNameRole:
+        return m_appsManager->categoryDisplayName(itemInfo.m_categoryId);
+    case AppIconProviderUrlPathRole: {
+        return itemInfo.m_iconKey.isEmpty() ? "" : (itemInfo.m_iconKey + "::" + itemInfo.m_desktop);
+    }
     default:
         break;
     }
@@ -619,6 +624,14 @@ Qt::ItemFlags AppsListModel::flags(const QModelIndex &index) const
         return defaultFlags | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 
     return defaultFlags;
+}
+
+QHash<int, QByteArray> AppsListModel::roleNames() const
+{
+    QHash<int, QByteArray> defaults = QAbstractListModel::roleNames();
+    defaults.insert(AppCategoryNameRole, QByteArrayLiteral("category"));
+    defaults.insert(AppIconProviderUrlPathRole, QByteArrayLiteral("iconProviderUrl"));
+    return defaults;
 }
 
 ///

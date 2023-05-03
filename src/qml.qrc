@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/IconItemDelegate.qml</file>
+        <file>qml/AppGridView.qml</file>
+        <file>qml/AppListView.qml</file>
+        <file>qml/WindowedFrame.qml</file>
+        <file>qml/FullscreenFrame.qml</file>
+    </qresource>
+</RCC>

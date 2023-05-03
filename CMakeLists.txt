@@ -59,14 +59,14 @@ include(GNUInstallDirs)
 # Find the library
 find_package(PkgConfig REQUIRED)
 find_package(Qt5 REQUIRED
-    COMPONENTS Widgets Svg X11Extras DBus Concurrent
+    COMPONENTS Widgets Svg X11Extras DBus Concurrent QuickWidgets Qml
 )
 find_package(Qt5Gui CONFIG REQUIRED Private)
 find_package(Dtk REQUIRED COMPONENTS Core Widget Gui)
 
 pkg_check_modules(XCB_EWMH REQUIRED IMPORTED_TARGET xcb-ewmh)
 pkg_check_modules(QGSettings REQUIRED IMPORTED_TARGET gsettings-qt)
-pkg_check_modules(GIO REQUIRED IMPORTED_TARGET gio-2.0)
+pkg_check_modules(GIO REQUIRED IMPORTED_TARGET gio-2.0 gio-unix-2.0)
 
 set(XML2CPP_DIR ${PROJECT_SOURCE_DIR}/src/global_util/dbus/xml2cpp)
 
@@ -139,6 +139,8 @@ add_library(trashutils
 OBJECT
     src/trashutils/trashmonitor.h
     src/trashutils/trashmonitor.cpp
+    src/trashutils/appinfomonitor.h
+    src/trashutils/appinfomonitor.cpp
 )
 
 target_link_libraries(trashutils
@@ -151,6 +153,8 @@ target_compile_definitions(trashutils
 PRIVATE
     QT_NO_KEYWORDS
 )
+add_subdirectory(src/quick)
+add_subdirectory(src/utils)
 
 include_directories(
     src
@@ -207,7 +211,7 @@ file(GLOB SRC_PATH
     ${DBUS_INTERFACES}
 )
 
-add_executable(${BIN_NAME} ${SRC_PATH} ${INTERFACES} src/skin.qrc src/widgets/images.qrc)
+add_executable(${BIN_NAME} ${SRC_PATH} ${INTERFACES} src/qml.qrc src/skin.qrc src/widgets/images.qrc)
 
 target_include_directories(${BIN_NAME} PUBLIC
     ${DtkWidget_INCLUDE_DIRS}
@@ -220,6 +224,8 @@ target_link_libraries(${BIN_NAME} PRIVATE
     ${DtkWidget_LIBRARIES} # seems we won't be able to use Dtk::Widget in dtkwidget 5.6.4
     Dtk::Gui
     Qt5::Widgets
+    Qt5::QuickWidgets
+    Qt5::Qml
     Qt5::Concurrent
     Qt5::X11Extras
     Qt5::DBus
@@ -227,6 +233,8 @@ target_link_libraries(${BIN_NAME} PRIVATE
     Qt5::GuiPrivate
     PkgConfig::QGSettings
     trashutils
+    launcher-utils
+    launcher-qml-utils
 )
 
 ## qm files

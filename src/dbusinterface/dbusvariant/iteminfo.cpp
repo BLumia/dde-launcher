@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "iteminfo.h"
+#include "categoryutils.h"
 #include <QDebug>
 
 ItemInfo::ItemInfo()
@@ -217,6 +218,24 @@ ItemInfoList_v1 ItemInfo_v1::itemListToItemV1List(const ItemInfoList &list)
 
     foreach (const ItemInfo &info, list)
         itemInfoList << info;
+
+    return itemInfoList;
+}
+
+ItemInfoList_v1 ItemInfo_v1::hashMapToItemV1List(const QList<QHash<QString, QString> > &list)
+{
+    ItemInfoList_v1 itemInfoList;
+
+    for (const QHash<QString, QString> & hashmap : list) {
+        ItemInfo_v1 info;
+        info.m_desktop = hashmap["filepath"];
+        info.m_iconKey = hashmap["icon"];
+        info.m_name = hashmap["name"];
+        info.m_keywords = hashmap["keywords"].split(';');
+        info.m_categoryId = qint64(CategoryUtils::parseBestMatchedCategory(hashmap["categories"].split(';')));
+
+        itemInfoList << info;
+    }
 
     return itemInfoList;
 }

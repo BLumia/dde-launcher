@@ -77,6 +77,7 @@ public:
 
     static ItemInfoList_v1 appListToItemV1List(const AppInfoList &list);
     static ItemInfoList_v1 itemListToItemV1List(const ItemInfoList &list);
+    static ItemInfoList_v1 hashMapToItemV1List(const QList<QHash<QString, QString> > &list);
     static ItemInfoList_v1 itemV2ListToItemV1List(const ItemInfoList_v2 &list);
 
     bool isTitle() const;

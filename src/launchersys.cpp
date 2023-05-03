@@ -11,6 +11,8 @@
 #include "constants.h"
 #include "amdbuslauncherinterface.h"
 #include "amdbusdockinterface.h"
+#include "dwindowedframe.h"
+#include "dfullscreenframe.h"
 
 #define SessionManagerService "org.deepin.dde.SessionManager1"
 #define SessionManagerPath "/org/deepin/dde/SessionManager1"
@@ -119,22 +121,22 @@ void LauncherSys::displayModeChanged()
 
     if (m_calcUtil->fullscreen()) {
         if (!m_fullLauncher) {
-            m_fullLauncher = new FullScreenFrame;
+            m_fullLauncher = new DFullScreenFrame;
             m_fullLauncher->installEventFilter(this);
-            connect(m_fullLauncher, &FullScreenFrame::visibleChanged, this, &LauncherSys::onVisibleChanged);
-            connect(m_fullLauncher, &FullScreenFrame::visibleChanged, m_ignoreRepeatVisibleChangeTimer, static_cast<void (QTimer::*)()>(&QTimer::start), Qt::DirectConnection);
-            connect(m_fullLauncher, &FullScreenFrame::searchApp, m_launcherPlugin, &LauncherPluginController::onSearchedTextChanged, Qt::QueuedConnection);
+            connect(m_fullLauncher, &DFullScreenFrame::visibleChanged, this, &LauncherSys::onVisibleChanged);
+            connect(m_fullLauncher, &DFullScreenFrame::visibleChanged, m_ignoreRepeatVisibleChangeTimer, static_cast<void (QTimer::*)()>(&QTimer::start), Qt::DirectConnection);
+            connect(m_fullLauncher, &DFullScreenFrame::searchApp, m_launcherPlugin, &LauncherPluginController::onSearchedTextChanged, Qt::QueuedConnection);
         }
 
         m_launcherInter = static_cast<LauncherInterface*>(m_fullLauncher);
 
     } else {
         if (!m_windowLauncher) {
-            m_windowLauncher = new WindowedFrame;
+            m_windowLauncher = new DWindowedFrame;
             m_windowLauncher->installEventFilter(this);
-            connect(m_windowLauncher, &WindowedFrame::visibleChanged, this, &LauncherSys::onVisibleChanged);
-            connect(m_windowLauncher, &WindowedFrame::visibleChanged, m_ignoreRepeatVisibleChangeTimer, static_cast<void (QTimer::*)()>(&QTimer::start), Qt::DirectConnection);
-            connect(m_windowLauncher, &WindowedFrame::searchApp, m_launcherPlugin, &LauncherPluginController::onSearchedTextChanged, Qt::QueuedConnection);
+            connect(m_windowLauncher, &DWindowedFrame::visibleChanged, this, &LauncherSys::onVisibleChanged);
+            connect(m_windowLauncher, &DWindowedFrame::visibleChanged, m_ignoreRepeatVisibleChangeTimer, static_cast<void (QTimer::*)()>(&QTimer::start), Qt::DirectConnection);
+            connect(m_windowLauncher, &DWindowedFrame::searchApp, m_launcherPlugin, &LauncherPluginController::onSearchedTextChanged, Qt::QueuedConnection);
         }
         m_launcherInter = static_cast<LauncherInterface*>(m_windowLauncher);
     }

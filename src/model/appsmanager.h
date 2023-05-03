@@ -114,6 +114,8 @@ public:
     void setDragModelIndex(const QModelIndex &index);
     QModelIndex dragModelIndex() const;
 
+    QString categoryDisplayName(qlonglong category);
+
 signals:
     void itemDataChanged(const ItemInfo_v1 &info) const;
     void dataChanged(const AppsListModel::AppCategory category) const;

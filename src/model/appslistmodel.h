@@ -61,6 +61,8 @@ public:
         AppCanSendToDockRole,
         AppCanStartUpRole,
         AppCanOpenProxyRole,
+        AppCategoryNameRole,
+        AppIconProviderUrlPathRole,
     };
 
     enum AppCategory {
@@ -118,6 +120,7 @@ protected:
     QMimeData *mimeData(const QModelIndexList &indexes) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    QHash<int,QByteArray> roleNames() const Q_DECL_OVERRIDE;
 
 private:
     void dataChanged(const AppsListModel::AppCategory category);

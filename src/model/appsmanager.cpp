@@ -24,6 +24,9 @@
 #include <DHiDPIHelper>
 #include <DApplication>
 #include "dpinyin.h"
+#include "iconutils.h"
+
+#include <trashutils/appinfomonitor.h>
 
 #define AUTOSTART_KEY "autostart-desktop-list"
 
@@ -137,7 +140,6 @@ AppsManager::AppsManager(QObject *parent)
     connect(m_delayRefreshTimer, &QTimer::timeout, this, &AppsManager::delayRefreshData);
     connect(m_trashMonitor, &TrashMonitor::trashAttributeChanged, this, &AppsManager::updateTrashState, Qt::QueuedConnection);
     connect(m_refreshCalendarIconTimer, &QTimer::timeout, this, &AppsManager::onRefreshCalendarTimer);
-
     if (!m_refreshCalendarIconTimer->isActive())
         m_refreshCalendarIconTimer->start();
 }
@@ -815,6 +817,11 @@ QModelIndex AppsManager::dragModelIndex() const
     return m_dragIndex;
 }
 
+QString AppsManager::categoryDisplayName(qlonglong category)
+{
+    return m_categoryTs[static_cast<int>(category)];
+}
+
 /**多个页面间进行拖拽时，需要用到目标视图列表当前页对应的视图
  * 保存当前视图列表对象指针
  * @brief AppsManager::setListView
@@ -1168,7 +1175,7 @@ void AppsManager::onGSettingChanged(const QString &keyName)
 const ItemInfo_v1 AppsManager::createOfCategory(qlonglong category)
 {
     ItemInfo_v1 info;
-    info.m_name = m_categoryTs[static_cast<int>(category)];
+    info.m_name = categoryDisplayName(category);
     info.m_categoryId = category;
     info.m_iconKey = "";
     return info;
@@ -1384,7 +1391,7 @@ bool AppsManager::appIsEnableScaling(const QString &desktop)
 const QPixmap AppsManager::appIcon(const ItemInfo_v1 &info, const int size)
 {
     QPixmap pix;
-    const int iconSize = perfectIconSize(size);
+    const int iconSize = IconUtils::perfectIconSize(size);
 
     m_itemInfo = info;
     m_iconValid = getThemeIcon(pix, info, size);
@@ -1462,7 +1469,13 @@ void AppsManager::refreshCategoryInfoList()
     QStringList filters = SettingValue("com.deepin.dde.launcher", "/com/deepin/dde/launcher/", "filter-keys").toStringList();
 
     // 1. 从后端服务获取所有应用列表
-    const ItemInfoList_v1 &datas = ItemInfo_v1::itemV2ListToItemV1List(reply.value());
+//    const ItemInfoList_v1 &datas = ItemInfo_v1::itemV2ListToItemV1List(reply.value());
+    AppInfoMonitor aim(nullptr);
+    auto fuck = aim.allAppInfosShouldBeShown();
+    for (auto shit : fuck) {
+        qDebug() << "aaa" << shit;
+    }
+    const ItemInfoList_v1 &datas = ItemInfo_v1::hashMapToItemV1List(fuck);
 
     m_allAppInfoList.clear();
     m_allAppInfoList.reserve(datas.size());

@@ -58,8 +58,8 @@ void AppItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
         return;
 
 #ifdef QT_DEBUG
-    painter->setBrush(Qt::red);
-    painter->drawRect(option.rect);
+//    painter->setBrush(Qt::red);
+//    painter->drawRect(option.rect);
 #endif
 
     painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
